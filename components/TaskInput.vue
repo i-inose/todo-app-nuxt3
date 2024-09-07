@@ -1,20 +1,12 @@
 <script setup>
-import { ref } from "vue"
+import { useTask } from "../composables/useTask"
 
-const emit = defineEmits(["add-task"])
-const newTask = ref("")
-
-const emitAddTask = () => {
-  if (newTask.value.trim()) {
-    emit('add-task', newTask.value.trim())
-    newTask.value = ""
-  }
-}
+const { newTask, addTask } = useTask()
 </script>
 
 <template>
 	<div>
 		<input v-model="newTask" placeholder="タスクを入力してください"/>
-		<button @click="emitAddTask">追加</button>
+		<button @click="addTask">追加</button>
 	</div>
 </template>

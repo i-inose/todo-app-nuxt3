@@ -1,18 +1,14 @@
 <script setup>
-const props = defineProps({
-	tasks: Array
-})
-const emit = defineEmits(["remove-task"])
-const emitRemoveTask = (index) => {
-	emit("remove-task", index)
-}
+import { useTask } from "../composables/useTask"
+
+const { tasks, removeTask } = useTask()
 </script>
 
 <template>
 	<ul>
 		<li v-for="(task, index) in tasks" :key="index">
 			{{ task }}
-			<button @click="emitRemoveTask(index)">削除</button>
+			<button @click="removeTask(index)">削除</button>
 		</li>
 	</ul>
 </template>

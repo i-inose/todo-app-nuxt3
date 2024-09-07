@@ -3,7 +3,7 @@ import { ref } from "vue"
 import TaskInput from "../components/TaskInput.vue"
 import TaskList from "../components/TaskList.vue"
 
-const tasks = ref([])
+const tasks = ref<string>([])
 
 const loadTasks = () => {
   const savedTasks = localStorage.getItem("tasks")

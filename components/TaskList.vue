@@ -7,8 +7,8 @@ const { tasks, removeTask } = useTask()
 <template>
 	<ul>
 		<li v-for="(task, index) in tasks" :key="index">
-			{{ task }}
-			<button @click="removeTask(index)">削除</button>
+			{{ task.content }}
+			<button @click="removeTask(task.id)">削除</button>
 		</li>
 	</ul>
 </template>

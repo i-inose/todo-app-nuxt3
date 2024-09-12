@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
-    "@nuxtjs/tailwindcss": "^6.12.1",
     "@sidebase/nuxt-auth": "^0.9.1",
     "consola": "^3.2.3",
     "defu": "^6.1.4",
@@ -21,8 +20,9 @@
     "vuefire": "^3.2.0"
   },
   "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.12.1",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.45",
-    "tailwindcss": "^3.4.10"
+    "tailwindcss": "^3.4.11"
   }
 }

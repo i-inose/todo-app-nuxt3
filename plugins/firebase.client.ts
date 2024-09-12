@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth'; // Auth のインポートを追加
+import { getAuth } from 'firebase/auth';
 import { defineNuxtPlugin } from '#app';
 
 export default defineNuxtPlugin(() => {
@@ -17,11 +17,9 @@ export default defineNuxtPlugin(() => {
   if (!getApps().length) {
     initializeApp(firebaseConfig);
   }
-  // Firebase を初期化
-  const app = initializeApp(firebaseConfig);
 
   // Auth インスタンスを取得
-  const auth = getAuth(app);
+  const auth = getAuth();
   const firestore = getFirestore();
 
   return {

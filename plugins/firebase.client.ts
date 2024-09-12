@@ -4,7 +4,6 @@ import { getAuth } from 'firebase/auth';
 import { defineNuxtPlugin } from '#app';
 
 export default defineNuxtPlugin(() => {
-  // Firebaseの設定情報
   const firebaseConfig = {
     apiKey: "AIzaSyA9tcEL_HuzPidzCPcVOSG1KVStg3jfvfM",
     authDomain: "todo-app-96dbd.firebaseapp.com",
@@ -18,7 +17,6 @@ export default defineNuxtPlugin(() => {
     initializeApp(firebaseConfig);
   }
 
-  // Auth インスタンスを取得
   const auth = getAuth();
   const firestore = getFirestore();
 

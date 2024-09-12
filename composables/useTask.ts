@@ -1,7 +1,21 @@
-import { ref } from 'vue';
-import { useNuxtApp, useState } from '#app';
-import { collection, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
-import { getAuth, signInWithEmailAndPassword, signOut as firebaseSignOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { ref } from "vue";
+import { useNuxtApp, useState } from "#app";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+} from "firebase/firestore";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 
 // Taskの型定義
 interface Task {
@@ -13,7 +27,7 @@ const tasks = ref<Task[]>([]);
 
 export const useTask = () => {
   const { $firestore, $auth } = useNuxtApp();
-  const newTask = useState<string>('newTask', () => '');
+  const newTask = useState<string>("newTask", () => "");
 
   const waitAuthState = (): Promise<firebase.User | null> => {
     return new Promise((resolve) => {
@@ -27,30 +41,34 @@ export const useTask = () => {
   const getTasks = async () => {
     const user = await waitAuthState();
     if (user) {
-      const querySnapshot = await getDocs(collection($firestore, `users/${user.uid}/tasks`));
-      tasks.value = querySnapshot.docs
-        .map(doc => ({
-          timestamp: doc.data().timestamp,
-          content: doc.data().content,
-          id: doc.id
-        }));
+      const querySnapshot = await getDocs(
+        collection($firestore, `users/${user.uid}/tasks`)
+      );
+      tasks.value = querySnapshot.docs.map((doc) => ({
+        timestamp: doc.data().timestamp,
+        content: doc.data().content,
+        id: doc.id,
+      }));
 
       // タイムスタンプで新しい順にソート
       tasks.value.sort((a, b) => b.timestamp - a.timestamp);
     }
-};
+  };
 
   const addTask = async () => {
     const trimmedTask = newTask.value.trim();
     const user = getAuth().currentUser;
     if (trimmedTask && user) {
-      const docRef = await addDoc(collection($firestore, `users/${user.uid}/tasks`), {
-        content: trimmedTask,
-        userId: user.uid,
-        timestamp: serverTimestamp(),
-      });
+      const docRef = await addDoc(
+        collection($firestore, `users/${user.uid}/tasks`),
+        {
+          content: trimmedTask,
+          userId: user.uid,
+          timestamp: serverTimestamp(),
+        }
+      );
       tasks.value.push({ id: docRef.id, content: trimmedTask });
-      newTask.value = '';
+      newTask.value = "";
     }
   };
 
@@ -58,7 +76,7 @@ export const useTask = () => {
     const user = await waitAuthState();
     if (user) {
       await deleteDoc(doc($firestore, `users/${user.uid}/tasks`, taskId));
-      tasks.value = tasks.value.filter(task => task.id !== taskId);
+      tasks.value = tasks.value.filter((task) => task.id !== taskId);
     }
   };
 
@@ -72,43 +90,56 @@ export const useTask = () => {
 
 // ユーザーのトークンを保持する
 export const useToken = (): globalThis.Ref<string | null> =>
-  useState<string | null>('token', () => null);
+  useState<string | null>("token", () => null);
 
 // 認証機能の型定義
 type Auth = {
   token: globalThis.Ref<string | null>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
-  checkAuthState: () => void;
+  checkAuthState: () => Promise<any>;
   signInWithGoogle: () => Promise<void>;
 };
 
 export const useAuth = (): Auth => {
-  const { $auth } = useNuxtApp();
+  // const auth = inject<Auth>("auth");
+  // if (!auth) {
+  //   throw new Error("Firebase Auth is not provided!");
+  // }
   const token = useToken();
 
+  const { $firestore, $auth } = useNuxtApp();
   // 認証状態を確認する
-  const checkAuthState = (): void => {
-    onAuthStateChanged($auth, async (user) => {
-      if (user) {
-        const idToken = await user.getIdToken();
-        token.value = idToken;
-      } else {
-        token.value = null;
-      }
+  const checkAuthState = async (): any => {
+    const user = new Promise((resolve) => {
+      const unsubscribe = onAuthStateChanged($auth, (user) => {
+        unsubscribe();
+
+        if (user) {
+          const idToken = user.getIdToken();
+          token.value = idToken;
+        } else {
+          navigateTo("/login");
+          token.value = null;
+        }
+
+        resolve(user);
+      });
     });
   };
 
   // サインアウト処理
   const signOut = async (): Promise<void> => {
-    await firebaseSignOut($auth);
+    const auth = getAuth();
+    await firebaseSignOut(auth);
     token.value = null;
   };
 
   // Googleでサインイン
   const signInWithGoogle = async (): Promise<void> => {
     const provider = new GoogleAuthProvider();
-    const userCredential = await signInWithPopup($auth, provider);
+    const auth = getAuth();
+    const userCredential = await signInWithPopup(auth, provider);
     const idToken = await userCredential.user.getIdToken();
     token.value = idToken;
   };

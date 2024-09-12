@@ -10,59 +10,11 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <div>
-    <h1>ログイン</h1>
-		<hr />
-		<div class="login_detail">
-      <button @click="handleLogin">Googleでログイン</button>
-		</div>
+  <div class="bg-gray-900 flex flex-col items-center justify-center h-screen text-white">
+    <h1 class="animate-bounce text-4xl font-bold mb-4">ログイン</h1>
+    <hr class="w-full border-white mb-4" />
+    <button @click="handleLogin" class="px-6 py-3 bg-blue-600 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors duration-300">
+      Googleでログイン
+    </button>
   </div>
 </template>
-
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background-color: #2c2c2c;
-  color: #ffffff;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-input {
-  width: calc(80%);
-  padding: 10px;
-  border: 1px solid #666;
-  border-radius: 5px;
-  margin-right: 10px;
-  font-size: 16px;
-  background-color: #ffffff;
-  color: #050505;
-}
-
-button {
-  padding: 10px 20px;
-  margin-left: 10px;
-  background-color: #555;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #777;
-}
-
-.login_detail button {
-  background-color: rgba(41, 41, 255, 0.845);
-}
-
-.login_detail button:hover {
-  background-color: #777;
-}
-</style>

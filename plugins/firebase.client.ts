@@ -17,9 +17,12 @@ export default defineNuxtPlugin(() => {
   if (!getApps().length) {
     initializeApp(firebaseConfig);
   }
+  // Firebase を初期化
+  const app = initializeApp(firebaseConfig);
 
+  // Auth インスタンスを取得
+  const auth = getAuth(app);
   const firestore = getFirestore();
-  const auth = getAuth();
 
   return {
     provide: {

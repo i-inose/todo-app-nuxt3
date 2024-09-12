@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  middleware: 'auth'
+})
+
 const handleLogout = async () => {
   await useAuth().signOut();
   if (!useAuth().token.value) {

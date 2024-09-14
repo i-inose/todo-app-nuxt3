@@ -1,10 +1,10 @@
 # 使用技術一覧
-<h1 style="display: inline">
+<p style="display: inline">
   <img src="https://img.shields.io/badge/-Typescript-007ACC.svg?logo=typescript&style=plastic">
   <img src="https://img.shields.io/badge/-Vue.js-4FC08D.svg?logo=vue.js&style=plastic">
   <img src="https://img.shields.io/badge/-Nuxt.js-00C58E.svg?logo=nuxt.js&style=plastic">
   <img src="https://img.shields.io/badge/-Firebase-FFCA28.svg?logo=firebase&style=plastic">
-</h1>
+</p>
 
 # 説明
 
